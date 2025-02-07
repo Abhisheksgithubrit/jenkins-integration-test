@@ -1,25 +1,36 @@
 pipeline {
     agent any
+
     stages {
-        stage('Clone Repository') {
-            steps {
-                git url: 'https://github.com/Abhisheksgithubrit/jenkins-integration-test.git', branch: 'main'
-            }
-        }
         stage('Build') {
             steps {
-                echo 'Building the application...'
+                echo 'Building the project...'
             }
         }
+
         stage('Test') {
             steps {
                 echo 'Running tests...'
             }
         }
-        stage('Deploy') {
+
+        stage('Notify Slack') {
             steps {
-                echo 'Deploying the application...'
+                slackSend (
+                    channel: '#jenkins-alerts', // Replace with your Slack channel
+                    message: "Jenkins Build Successful!", // Customize your message
+                    color: "good" // "good", "warning", or "danger"
+                )
             }
+        }
+    }
+    post {
+        failure {
+            slackSend (
+                channel: '#jenkins-alerts', // Replace with your Slack channel
+                message: "Jenkins Build Failed!", // Customize your message
+                color: "danger" // "good", "warning", or "danger"
+            )
         }
     }
 }
