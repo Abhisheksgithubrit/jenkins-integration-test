@@ -6,7 +6,7 @@ pipeline {
                 echo 'Building...'
             }
         }
-        stage('Deploy') {   
+        stage('Deploy') {
             steps {
                 echo 'Deploying...'
             }
@@ -14,10 +14,10 @@ pipeline {
     }
     post {
         success {
-            jiraAddComment(site: 'MyJiraCloud', idOrKey: 'KAN-1', comment: 'Build successful!')
+            jiraAddComment site: 'MyJiraCloud', idOrKey: 'KAN-2', comment: 'Build successful! '
         }
         failure {
-            jiraAddComment(site: 'MyJiraCloud', idOrKey: 'KAN-1', comment: "Build Failed")
+            jiraAddComment site: 'MyJiraCloud', idOrKey: 'KAN-2', comment: 'Build failed '
         }
     }
 }
