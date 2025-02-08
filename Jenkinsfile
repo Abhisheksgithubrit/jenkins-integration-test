@@ -1,36 +1,23 @@
 pipeline {
     agent any
-
     stages {
         stage('Build') {
             steps {
-                echo 'Building the project...'
+                echo 'Building...'
             }
         }
-
-        stage('Test') {
+        stage('Deploy') {
             steps {
-                echo 'Running tests...'
-            }
-        }
-
-        stage('Notify Slack') {
-            steps {
-                slackSend (
-                    channel: '#jenkins-alerts', // Replace with your Slack channel
-                    message: "Jenkins Build Successful!", // Customize your message
-                    color: "good" // "good", "warning", or "danger"
-                )
+                echo 'Deploying...'
             }
         }
     }
     post {
+        success {
+            jiraAddComment idOrKey: 'KAN-1', comment: "Build & Deployment Successful"
+        }
         failure {
-            slackSend (
-                channel: '#jenkins-alerts', // Replace with your Slack channel
-                message: "Jenkins Build Failed!", // Customize your message
-                color: "danger" // "good", "warning", or "danger"
-            )
+            jiraAddComment idOrKey: 'KAN-1', comment: "Build Failed"
         }
     }
 }
