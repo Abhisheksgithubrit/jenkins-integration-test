@@ -14,10 +14,10 @@ pipeline {
     }
     post {
         success {
-            jiraAddComment idOrKey: 'KAN-1', comment: "Build & Deployment Successful"
+            jiraAddComment(site: 'abhialavandi.atlassian.net', issueKey: 'KAN-1', comment: 'Build successful!')
         }
         failure {
-            jiraAddComment idOrKey: 'KAN-1', comment: "Build Failed"
+            jiraAddComment(site: 'abhialavandi.atlassian.net', issueKey: 'KAN-1', comment: "Build Failed")
         }
     }
 }
